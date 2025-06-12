@@ -337,7 +337,7 @@ fun YoutubeSection() {
             thickness = 1.dp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp) // Memberi jarak agar lebih rapi
+                .padding(vertical = 8.dp)
         )
 
         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
