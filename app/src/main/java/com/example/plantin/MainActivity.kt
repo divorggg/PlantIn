@@ -383,6 +383,8 @@ fun YoutubeSection() {
                 thumbnailUrl = "https://img.youtube.com/vi/vNN8qN63ugQ/0.jpg"
             )
 
+            // Ini hanya testing push dari Android Studio
+
         }
     }
 }
