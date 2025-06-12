@@ -322,7 +322,7 @@ fun YoutubeSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .navigationBarsPadding() // Menambahkan padding sesuai ukuran navigation bar
+            .navigationBarsPadding()
             .background(Color(0xFFF4A261))
             .padding(16.dp)
     ) {
