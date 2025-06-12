@@ -1,0 +1,55 @@
+<resources>
+    <!-- App Name -->
+    <string name="app_name">PlantIn</string>
+
+    <!-- Activity Titles -->
+    <string name="title_activity_weather_predict">WeatherPredictActivity</string>
+
+    <!-- Welcome -->
+    <string name="Welcome">Selamat Datang</string>
+
+    <!-- Onboarding Descriptions -->
+    <string name="desc_onboarding1">Teknologi Tumbuh Bersama\nTanaman Anda</string>
+    <string name="desc_onboarding2">Mari identifikasi cepat, agar tanaman\nsehat</string>
+
+    <!-- Citrus Disease Descriptions -->
+    <string name="BlackSpotDesc">
+        Bintik hitam jeruk adalah penyakit jamur yang menyebabkan buah berbintik-bintik dan bercak,
+        tetapi tidak mempengaruhi kualitas internal buah yang terinfeksi.
+        Banyak spesies jeruk yang berisiko terkena bercak hitam jeruk,
+        sehingga diperlukan peraturan dan pengelolaan yang ketat untuk mencegah penyebaran penyakit ini.
+    </string>
+
+    <string name="BlackSpotDesc2">
+        Bintik hitam pada jeruk disebabkan oleh jamur Phyllosticta citricarpa.
+        Penyakit ini menyebar melalui serasah daun, dari buah ke buah dan daun melalui percikan air hujan,
+        dan melalui pergerakan yang dibantu oleh manusia.
+    </string>
+
+    <string name="CitrusCankerDesc">
+        Canker jeruk adalah penyakit yang disebabkan oleh bakteri Xanthomonas citri subsp. citri
+        (sinonim X. axonopodis pv. citri).
+        Penyakit ini tumbuh subur di daerah dengan curah hujan tinggi dan suhu hangat.
+        Canker jeruk ditemukan di seluruh Florida dan di daerah terbatas di Alabama, Louisiana, dan Texas.
+    </string>
+
+    <string name="CitrusCankerDesc2">
+        Pohon jeruk yang terinfeksi parah dapat menggugurkan daunnya dan menggugurkan buah sebelum waktunya.
+        Buah yang terinfeksi canker aman untuk dimakan tetapi tidak dapat dipasarkan karena penampilannya.
+    </string>
+
+    <string name="GreeningDesc">
+        Citrus greening, juga disebut Huanglongbing (HLB), adalah infeksi bakteri pada tanaman jeruk.
+        Penyakit ini merupakan salah satu penyakit jeruk paling serius di dunia.
+        Setelah terinfeksi, sebagian besar pohon mati dalam beberapa tahun. Tidak ada obatnya.
+        Meskipun penyakit ini tidak menimbulkan ancaman kesehatan bagi manusia atau hewan,
+        penyakit ini telah menghancurkan jutaan hektar tanaman jeruk di seluruh Amerika Serikat dan luar negeri.
+    </string>
+
+    <string name="CitrusGreeningDesc2">
+
+    </string>
+
+    <!-- Placeholder -->
+    <string name="none" />
+</resources>

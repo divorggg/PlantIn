@@ -1,0 +1,48 @@
+plantuml
+@startuml
+!theme vibrant
+
+class CitrusDisease {
+  + onCreate(savedInstanceState: Bundle?)
+}
+
+' Composable Function
+class DiseaseSliderScreen [[Composable]] {
+  + onBackClick: () -> Unit
+  - pagerState: PagerState
+  - scope: CoroutineScope
+  - images: List<Int>
+  - diseaseTitles: List<String>
+  - descriptions: List<Pair<Int, Int>>
+  - currentDescription: Pair<Int, Int>
+}
+
+CitrusDisease --> DiseaseSliderScreen : uses
+
+package androidx.activity {
+  class ComponentActivity {
+  }
+}
+
+package com.google.accompanist.pager {
+  class PagerState
+  class HorizontalPager
+  class HorizontalPagerIndicator
+}
+
+package kotlinx.coroutines {
+  class CoroutineScope
+}
+
+CitrusDisease -|> ComponentActivity
+DiseaseSliderScreen ..> PagerState : uses
+DiseaseSliderScreen ..> HorizontalPager : uses
+DiseaseSliderScreen ..> HorizontalPagerIndicator : uses
+DiseaseSliderScreen ..> CoroutineScope : uses
+
+' Ketergantungan pada Resource
+DiseaseSliderScreen ..> R.drawable : (images)
+DiseaseSliderScreen ..> R.string : (descriptions)
+
+hide empty members
+@enduml

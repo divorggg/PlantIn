@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+
+    <application
+        android:name=".notes.MainApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/icon_plantin"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/icon_plantin"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.PlantIn"
+        tools:targetApi="31">
+        <activity
+            android:name=".onboarding.SplashActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Plantin.Splash"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.CitrusDisease"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+
+        <activity
+            android:name=".ui.GuideApp"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".classification.ClassificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+
+        <activity
+            android:name=".classification.history.HistoryActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+
+        <activity
+            android:name=".classification.AnalyzeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".classification.result.ResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".ui.MaintenanceActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".ui.Treatment.TreatmentActivity"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".ui.article.ArticlePage"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".weather.WeatherPredictActivity"
+            android:exported="false"
+            android:label="@string/title_activity_weather_predict"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".notes.NotesPage"
+            android:exported="false"
+            android:theme="@style/Theme.PlantIn" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.PlantIn" />
+
+        <activity
+            android:name=".onboarding.OnBoardingActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.PlantIn">
+
+
+        </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+    </application>
+
+</manifest>
