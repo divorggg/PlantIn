@@ -16,7 +16,7 @@
 
 
     <!-- Splash screen colors -->
-    <color name="splash_background">#2E7D32</color>
+    <color name="splash_background">#FFFFFF</color>
 
     <!-- Additional colors -->
     <color name="light_green">#C8E6C9</color>

@@ -322,7 +322,7 @@ fun YoutubeSection() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .navigationBarsPadding() // Menambahkan padding sesuai ukuran navigation bar
+            .navigationBarsPadding()
             .background(Color(0xFFF4A261))
             .padding(16.dp)
     ) {
@@ -337,7 +337,7 @@ fun YoutubeSection() {
             thickness = 1.dp,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp) // Memberi jarak agar lebih rapi
+                .padding(vertical = 8.dp)
         )
 
         Row(modifier = Modifier.horizontalScroll(rememberScrollState())) {
@@ -383,7 +383,6 @@ fun YoutubeSection() {
                 thumbnailUrl = "https://img.youtube.com/vi/vNN8qN63ugQ/0.jpg"
             )
 
-            // Ini hanya testing push dari Android Studio
 
         }
     }
