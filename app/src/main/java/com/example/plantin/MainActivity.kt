@@ -269,8 +269,8 @@ class MainActivity : ComponentActivity() {
                     TopAppBar(
                         title = {
                             Text(buildAnnotatedString {
-                                withStyle(SpanStyle(color = Color(0xFFFAA96C))) { append("Plant") }
-                                withStyle(SpanStyle(color = Color(0xFF054D3B))) { append("In") }
+                                withStyle(SpanStyle(color = Color(0xFFFAA96C))) { append("Citrus") }
+                                withStyle(SpanStyle(color = Color(0xFF054D3B))) { append("Detector") }
                             }, fontWeight = FontWeight.Bold)
                         },
                         navigationIcon = {
