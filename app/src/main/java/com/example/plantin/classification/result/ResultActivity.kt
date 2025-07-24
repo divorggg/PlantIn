@@ -28,10 +28,17 @@ import org.tensorflow.lite.Interpreter
 import java.io.FileInputStream
 import java.nio.MappedByteBuffer
 import java.nio.channels.FileChannel
+import kotlin.math.exp
 
 class ResultActivity : ComponentActivity() {
 
     private var tflite: Interpreter? = null
+
+    // Konstanta sesuai dengan model Python terbaru
+    companion object {
+        private const val IMAGE_SIZE = 224
+        private const val NUM_CLASSES = 5
+    }
 
     @SuppressLint("CoroutineCreationDuringComposition")
     @RequiresApi(Build.VERSION_CODES.P)
@@ -48,18 +55,13 @@ class ResultActivity : ComponentActivity() {
                     var result by remember { mutableStateOf("Memproses...") }
                     var isLoading by remember { mutableStateOf(true) }
 
-
-
-
-
                     LaunchedEffect(imageUri) {
                         try {
                             withContext(Dispatchers.IO) {
                                 val bitmap = uriToBitmap(imageUri, context)
-                                val model = loadModelFile("model_unquant.tflite")
+                                val model = loadModelFile("model_jeruk.tflite")
                                 tflite = Interpreter(model)
                                 val inferenceResult = runModel(bitmap)
-
 
                                 // Update state hasil
                                 result = inferenceResult
@@ -85,7 +87,6 @@ class ResultActivity : ComponentActivity() {
                         }
                     }
 
-
                     ResultScreen(
                         imageUri = imageUri,
                         result = result,
@@ -104,7 +105,6 @@ class ResultActivity : ComponentActivity() {
             }
         }
     }
-
 
     override fun onDestroy() {
         super.onDestroy()
@@ -136,12 +136,12 @@ class ResultActivity : ComponentActivity() {
             bitmap
         }
 
-        val resized = Bitmap.createScaledBitmap(convertedBitmap, 224, 224, true)
-        val input = Array(1) { Array(224) { Array(224) { FloatArray(3) } } }
+        val resized = Bitmap.createScaledBitmap(convertedBitmap, IMAGE_SIZE, IMAGE_SIZE, true)
+        val input = Array(1) { Array(IMAGE_SIZE) { Array(IMAGE_SIZE) { FloatArray(3) } } }
 
-        // Normalize pixel values to [0, 1] range
-        for (y in 0 until 224) {
-            for (x in 0 until 224) {
+        // Normalize pixel values to [0, 1] range (sesuai dengan model Python)
+        for (y in 0 until IMAGE_SIZE) {
+            for (x in 0 until IMAGE_SIZE) {
                 val pixel = resized.getPixel(x, y)
                 input[0][y][x][0] = android.graphics.Color.red(pixel) / 255.0f
                 input[0][y][x][1] = android.graphics.Color.green(pixel) / 255.0f
@@ -149,23 +149,49 @@ class ResultActivity : ComponentActivity() {
             }
         }
 
-        val output = Array(1) { FloatArray(4) }
+        // Output sesuai dengan model Python (4 classes)
+        val output = Array(1) { FloatArray(NUM_CLASSES) }
 
         tflite?.run(input, output)
 
-        val labels = listOf("blackspot", "canker", "fresh", "greening")
-        val formattedLabels = listOf("Black Spot", "Canker", "Fresh", "Greening")
+        // Labels sesuai dengan model Python terbaru
+        val classNames = listOf("Black Spot", "Citrus Canker", "Fresh", "Greening", "Not Orange")
 
-        val maxIdx = output[0].indices.maxByOrNull { output[0][it] } ?: -1
-
-        // Apply softmax to get proper confidence scores
-        val expValues = output[0].map { kotlin.math.exp(it.toDouble()) }
+        // Apply softmax untuk mendapatkan confidence scores
+        val expValues = output[0].map { exp(it.toDouble()) }
         val sumExp = expValues.sum()
         val softmaxOutput = expValues.map { (it / sumExp).toFloat() }
 
-        val confidence = softmaxOutput[maxIdx] * 100
+        val maxIdx = softmaxOutput.indices.maxByOrNull { softmaxOutput[it] } ?: -1
+        val confidence = softmaxOutput[maxIdx]
 
-        // Return formatted label with confidence
-        return@withContext "${formattedLabels[maxIdx]}|Confidence: ${"%.2f".format(confidence)}%"
+        // Untuk model terbaru, langsung return hasil tanpa threshold
+        // karena model sudah memiliki class "Not Orange" untuk deteksi non-orange
+        return@withContext "${classNames[maxIdx]}|Confidence: ${"%.2f".format(confidence * 100)}%"
+    }
+
+    /**
+     * Fungsi tambahan untuk mendapatkan probabilitas semua kelas
+     */
+    private fun getAllClassProbabilities(softmaxOutput: FloatArray): Map<String, Float> {
+        val classNames = listOf("Black Spot", "Citrus Canker", "Fresh", "Greening", "Not Orange")
+        return classNames.mapIndexed { index, name ->
+            name to softmaxOutput[index]
+        }.toMap()
+    }
+
+    /**
+     * Fungsi untuk debugging - menampilkan semua probabilitas kelas
+     */
+    private fun debugProbabilities(softmaxOutput: FloatArray): String {
+        val classNames = listOf("Black Spot", "Citrus Canker", "Fresh", "Greening", "Not Orange")
+        val probabilities = StringBuilder()
+        probabilities.append("Class probabilities:\n")
+
+        classNames.forEachIndexed { index, className ->
+            probabilities.append("  $className: ${"%.4f".format(softmaxOutput[index])}\n")
+        }
+
+        return probabilities.toString()
     }
 }

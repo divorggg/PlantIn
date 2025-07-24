@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.example.plantin" />
+                  <option name="mobileSdkAppId" value="1:894952820009:android:a34f48aaa38170d2053b38" />
+                  <option name="projectId" value="citrusdetektor" />
+                  <option name="projectNumber" value="894952820009" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

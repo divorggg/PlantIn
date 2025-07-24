@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") // ✅ Tambahkan ini
     id("org.jetbrains.kotlin.plugin.compose") // ⬅️ WAJIB sejak Kotlin 2.0+
+    id("com.google.gms.google-services")
 }
 
 
@@ -165,6 +166,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    //deploy download model
+    
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4")
+
+    implementation("com.google.firebase:firebase-ml-modeldownloader:24.0.3")
 
 
 }

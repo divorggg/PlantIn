@@ -108,7 +108,13 @@ class MainActivity : ComponentActivity() {
 
     override fun onPause() {
         super.onPause()
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        stopLocationUpdatesIfInitialized()
+    }
+
+    private fun stopLocationUpdatesIfInitialized() {
+        if (::fusedLocationProviderClient.isInitialized && ::locationCallback.isInitialized) {
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -128,6 +134,10 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inisialisasi lebih awal untuk mencegah crash saat lifecycle method (seperti onPause) dipanggil
+        initLocationClient()
+
         lifecycleScope.launch {
             val isOnboardingCompleted = OnboardingDataStore.isOnboardingCompleted(this@MainActivity)
             if (!isOnboardingCompleted) {
@@ -138,6 +148,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 
     private fun initializeMainActivity() {
         initLocationClient()
@@ -269,13 +280,13 @@ class MainActivity : ComponentActivity() {
                     TopAppBar(
                         title = {
                             Text(buildAnnotatedString {
-                                withStyle(SpanStyle(color = Color(0xFFFAA96C))) { append("Plant") }
-                                withStyle(SpanStyle(color = Color(0xFF054D3B))) { append("In") }
+                                withStyle(SpanStyle(color = Color(0xFFFAA96C))) { append("Citrus") }
+                                withStyle(SpanStyle(color = Color(0xFF054D3B))) { append("Detector") }
                             }, fontWeight = FontWeight.Bold)
                         },
                         navigationIcon = {
                             IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                                Icon(Icons.Default.Menu, contentDescription = null)
+                                Icon(Icons.Default.Menu, contentDescription = "Buka Menu")
                             }
                         },
                         actions = {
@@ -383,7 +394,6 @@ fun YoutubeSection() {
                 thumbnailUrl = "https://img.youtube.com/vi/vNN8qN63ugQ/0.jpg"
             )
 
-            // Ini hanya testing push dari Android Studio
 
         }
     }

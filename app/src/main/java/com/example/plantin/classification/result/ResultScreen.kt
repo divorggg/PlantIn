@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,9 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -55,13 +52,11 @@ import com.example.plantin.ui.Treatment.TreatmentActivity
 fun ResultScreen(
     imageUri: Uri,
     result: String,
-
     isLoading: Boolean = false,
     onClose: () -> Unit
 ) {
     var showTreatment by remember { mutableStateOf(false) }
 
-    // Parse result if not loading and not an error
     val (formattedLabel, confidenceText, description, treatment) = if (!isLoading && !result.startsWith(
             "Error"
         ) && result.contains("|")
@@ -70,10 +65,9 @@ fun ResultScreen(
         val labelRaw = parts[0]
         val confidence = parts.getOrNull(1) ?: ""
 
-        // Cek jika tidak terdeteksi
         if (labelRaw.lowercase() == "unknown" || labelRaw.isBlank()) {
             listOf(
-                "Tidak Terdeteksi",
+                "Tidak Diketahui",
                 "",
                 "Jeruk tidak dapat dikenali. Coba ambil gambar yang lebih jelas.",
                 "Ulangi pengambilan gambar dengan pencahayaan yang cukup."
@@ -91,7 +85,7 @@ fun ResultScreen(
                 "black spot", "blackspot" -> "Black Spot disebabkan oleh jamur Phyllosticta citricarpa. Gejalanya berupa bercak hitam pada permukaan kulit jeruk."
                 "canker" -> "Canker disebabkan oleh bakteri Xanthomonas citri, menimbulkan luka seperti keropeng pada kulit buah dan daun."
                 "fresh" -> "Buah jeruk terlihat segar dan sehat, tidak menunjukkan gejala penyakit."
-                "greening", "grenning" -> "Greening (penyakit huanglongbing) disebabkan oleh bakteri dan menyebar melalui serangga. Buah menjadi hijau tidak merata dan pahit."
+                "greening", "grenning" -> "Greening disebabkan oleh bakteri yang menyebar lewat serangga. Buah menjadi hijau tidak merata dan pahit."
                 else -> "Deskripsi tidak tersedia."
             }
 
@@ -103,7 +97,6 @@ fun ResultScreen(
                 else -> "Penanganan tidak tersedia."
             }
 
-
             listOf(formatted, confidence, desc, treat)
         }
     } else {
@@ -114,26 +107,14 @@ fun ResultScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(
-                        "Hasil",
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.padding(start = 8.dp)
-                    )
+                    Text("Hasil", fontWeight = FontWeight.Bold)
                 },
                 navigationIcon = {
-                    IconButton(
-                        onClick = onClose,
-                        modifier = Modifier
-                            .padding(start = 8.dp)
-                            .background(Color(0xFFD9D9D9), shape = CircleShape)
-                            .size(36.dp)
-                    ) {
+                    IconButton(onClick = onClose) {
                         Icon(Icons.Default.Close, contentDescription = "Kembali")
                     }
                 },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.White
-                )
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color.White)
             )
         }
     ) { innerPadding ->
@@ -143,66 +124,45 @@ fun ResultScreen(
                 .padding(24.dp)
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-
-            // Image in center
             Image(
                 painter = rememberAsyncImagePainter(imageUri),
                 contentDescription = "Gambar jeruk",
                 modifier = Modifier
                     .size(200.dp)
                     .clip(RoundedCornerShape(16.dp))
-                    .background(Color.LightGray),
+                    .background(Color.LightGray)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Text "Hasil Identifikasi:"
             Text(
                 text = "Hasil Identifikasi:",
                 style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black,
-                textAlign = TextAlign.Center
+                fontWeight = FontWeight.Bold
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            // Detection Result
             when {
                 isLoading -> {
-                    CircularProgressIndicator(
-                        modifier = Modifier.padding(16.dp)
-                    )
-                    Text(
-                        text = "Memproses gambar...",
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
+                    CircularProgressIndicator()
+                    Text("Memproses gambar...", style = MaterialTheme.typography.bodyLarge)
                 }
 
                 result.startsWith("Error") -> {
                     Text(
                         text = "❌ Terjadi Kesalahan",
                         style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.error,
-                        textAlign = TextAlign.Center
+                        fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = result,
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+                    Text(result, textAlign = TextAlign.Center)
                 }
 
                 result.contains("|") -> {
-                    // Disease/Fresh result
                     Text(
                         text = formattedLabel,
                         style = MaterialTheme.typography.headlineLarge,
@@ -210,117 +170,96 @@ fun ResultScreen(
                         color = when (formattedLabel.lowercase()) {
                             "fresh" -> Color(0xFF4CAF50)
                             "black spot", "canker", "greening" -> Color.Black
-                            "tidak terdeteksi" -> Color.Red
+                            "tidak diketahui" -> Color.Red
                             else -> MaterialTheme.colorScheme.primary
-                        },
-                        textAlign = TextAlign.Center
+                        }
                     )
-                    if (confidenceText.isNotEmpty()) {
+                    if (formattedLabel == "Tidak Diketahui") {
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            text = confidenceText,
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            text = "Tidak terdeteksi jenis penyakit yang diketahui. Silakan coba lagi.",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
                             textAlign = TextAlign.Center
                         )
                     }
                 }
 
-
                 else -> {
-                    Text(
-                        text = result,
-                        style = MaterialTheme.typography.bodyLarge,
-                        textAlign = TextAlign.Center
-                    )
+                    Text(result, textAlign = TextAlign.Center)
                 }
             }
 
             Spacer(modifier = Modifier.height(32.dp))
+
             val context = LocalContext.current
-            // Treatment Info Dialog
-            if (showTreatment && !isLoading && !result.startsWith("Error") && result.contains("|")) {
+
+            if (showTreatment && formattedLabel != "Tidak Diketahui") {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 16.dp),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                    elevation = CardDefaults.cardElevation(4.dp)
                 ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(
-                            text = "📋 Deskripsi",
-                            style = MaterialTheme.typography.titleMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary
-                        )
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text("📋 Deskripsi", fontWeight = FontWeight.Bold)
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            text = description,
-                            style = MaterialTheme.typography.bodyMedium,
-                            lineHeight = 20.sp
-                        )
-
+                        Text(description, lineHeight = 20.sp)
                     }
                 }
             }
 
-            // Buttons
-            // Treatment Button
-            if (!isLoading && !result.startsWith("Error") && result.contains("|") && formattedLabel != "Tidak Terdeteksi") {
+            // Tombol info & penanganan hanya jika label valid
+            if (formattedLabel != "Tidak Terdeteksi" && formattedLabel != "Tidak Diketahui" && !isLoading) {
                 Button(
                     onClick = { showTreatment = !showTreatment },
                     shape = RoundedCornerShape(50),
                     modifier = Modifier
-                        .fillMaxWidth(0.6f) // Setengah lebar layar (50%)
-                        .height(48.dp)     // Opsional: tinggi tombol
-                        .border(
-                            1.dp,
-                            Color.Black,
-                            shape = RoundedCornerShape(50)
-                        ),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF054D3B)
-                    )
+                        .fillMaxWidth(0.6f)
+                        .height(48.dp)
+                        .border(1.dp, Color.Black, shape = RoundedCornerShape(50)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF054D3B))
                 ) {
-
-                    Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = if (showTreatment) "Tutup Info" else "info selengkapnya",
+                        text = if (showTreatment) "Tutup Info" else "Info Selengkapnya",
                         fontSize = 14.sp
                     )
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        val intent = Intent(context, TreatmentActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                    shape = RoundedCornerShape(50),
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .height(48.dp)
+                        .border(1.dp, Color.Black, shape = RoundedCornerShape(50)),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF054D3B))
+                ) {
+                    Text("Penanganannya", fontSize = 14.sp)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
             }
 
-            // Back Button
-            Button(
-                onClick = {
-                    val intent = Intent(context, TreatmentActivity::class.java)
-                    context.startActivity(intent)
-                },
-                shape = RoundedCornerShape(50),
-                modifier = Modifier
-                    .fillMaxWidth(0.6f) // Setengah lebar layar (50%)
-                    .height(48.dp)     // Opsional: tinggi tombol
-                    .border(
-                        1.dp,
-                        Color.Black,
-                        shape = RoundedCornerShape(50)
-                    ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF054D3B)
-                )
-            ) {
+            // Tombol kembali jika hasil tidak diketahui
+            if (formattedLabel == "Tidak Diketahui" && !isLoading) {
+                Button(
+                    onClick = onClose,
+                    shape = RoundedCornerShape(50),
+                    modifier = Modifier
+                        .fillMaxWidth(0.6f)
+                        .height(48.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+                ) {
+                    Text("Kembali", fontSize = 14.sp)
+                }
 
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = "Penanganannya",
-                    fontSize = 14.sp
-                )
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }

@@ -119,6 +119,7 @@ fun CitrusInfo() {
 @Composable
 fun DetectionCard(onDetectionClick: () -> Unit) {
     Card(
+        onClick = onDetectionClick,
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(containerColor = Color(0xFFD7E2B6)),
