@@ -261,6 +261,7 @@ fun AwalIdentifikasiScreen(
                 contentDescription = "Logo",
                 modifier = Modifier
                     .size(200.dp)
+                    .padding(16.dp)
                     .clip(RoundedCornerShape(16.dp)) // Ujung rounded
                     .background(Color.LightGray)     // Opsional, untuk latar belakang
             )

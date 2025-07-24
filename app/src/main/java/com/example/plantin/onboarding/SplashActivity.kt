@@ -18,24 +18,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.plantin.MainActivity
 import com.example.plantin.R
 import com.example.plantin.ui.theme.PlantInTheme
@@ -61,118 +54,49 @@ class SplashActivity : ComponentActivity() {
 
 @Composable
 fun SplashScreen(onSplashFinished: () -> Unit) {
-    // Animasi untuk logo
     val logoScale = remember { Animatable(0f) }
     val logoAlpha = remember { Animatable(0f) }
 
-    // Animasi untuk teks
-    val textAlpha = remember { Animatable(0f) }
-    val textTranslationY = remember { Animatable(50f) }
-
     LaunchedEffect(Unit) {
-        // Animasi logo muncul dengan scale dan fade in
         logoScale.animateTo(
             targetValue = 1f,
-            animationSpec = tween(
-                durationMillis = 800,
-                easing = FastOutSlowInEasing
-            )
+            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing)
         )
-
         logoAlpha.animateTo(
             targetValue = 1f,
-            animationSpec = tween(
-                durationMillis = 800,
-                easing = FastOutSlowInEasing
-            )
+            animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing)
         )
-
-        // Delay sebentar sebelum text muncul
-        delay(300)
-
-        // Animasi text muncul dengan fade in dan slide up
-        textAlpha.animateTo(
-            targetValue = 1f,
-            animationSpec = tween(
-                durationMillis = 600,
-                easing = FastOutSlowInEasing
-            )
-        )
-
-        textTranslationY.animateTo(
-            targetValue = 0f,
-            animationSpec = tween(
-                durationMillis = 600,
-                easing = FastOutSlowInEasing
-            )
-        )
-
-        // Tunggu sebentar sebelum pindah ke halaman selanjutnya
-        delay(1500)
+        delay(1800)
         onSplashFinished()
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFF4CAF50), // Hijau terang
-                        Color(0xFF2E7D32), // Hijau gelap
-                        Color(0xFF1B5E20)  // Hijau sangat gelap
-                    )
-                )
-            ),
+            .background(Color(0xFFFFFFFF)),
         contentAlignment = Alignment.Center
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Logo dengan animasi
+            // Logo image
             Image(
-                painter = painterResource(id = R.drawable.icon_plantin), // Ganti dengan logo Anda
-                contentDescription = "PlantIn Logo",
+                painter = painterResource(id = R.drawable.icon_plantin), // ganti sesuai nama file logo kamu
+                contentDescription = "CitrusDetector Logo",
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(240.dp) // PERBESAR ukuran di sini
                     .scale(logoScale.value)
                     .alpha(logoAlpha.value)
-                    .clip(CircleShape)
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // Nama aplikasi dengan animasi
-            Text(
-                text = "PlantIn",
-                fontSize = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .alpha(textAlpha.value)
-            )
 
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Tagline dengan animasi
-            Text(
-                text = "Your Plant Care Companion",
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Light,
-                color = Color.White.copy(alpha = 0.9f),
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .alpha(textAlpha.value)
-            )
-
-            Spacer(modifier = Modifier.height(48.dp))
-
-            
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

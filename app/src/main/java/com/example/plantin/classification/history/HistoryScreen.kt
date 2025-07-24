@@ -24,10 +24,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.PhotoCamera
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalNavigationDrawer
@@ -55,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.example.plantin.MainActivity
+import com.example.plantin.classification.ClassificationActivity
 import com.example.plantin.classification.history.dao.DetectionHistory
 import com.example.plantin.classification.history.dao.HistoryViewModel
 import com.example.plantin.notes.NotesPage
@@ -124,14 +127,31 @@ fun HistoryScreen(
             )
         }
     ) {
-        Scaffold(modifier = Modifier
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .fillMaxSize(),
+        Scaffold(
+            modifier = Modifier
+                .windowInsetsPadding(WindowInsets.statusBars)
+                .fillMaxSize(),
             topBar = {
                 TopBarScan(
                     onMenuClick = { scope.launch { drawerState.open() } }
                 )
+            },
+            floatingActionButton = {
+                FloatingActionButton(
+                    onClick = {
+                        context.startActivity(Intent(context, ClassificationActivity::class.java))
+                    },
+                    containerColor = Color(0xFFFAD7BE),
+                    shape = CircleShape,
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.PhotoCamera, // Ganti dengan ikon lain jika mau
+                        contentDescription = "Ke halaman klasifikasi",
+                        tint = Color.Black
+                    )
+                }
             }
+
         ) { paddingValues ->
             if (groupedHistory.isEmpty()) {
                 Box(

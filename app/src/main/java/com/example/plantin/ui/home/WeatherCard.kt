@@ -64,7 +64,7 @@ fun WeatherCard(weatherResponse: WeatherResult) {
             // Background Image
             Image(
                 painter = painterResource(R.drawable.bg_weather),
-                contentDescription = "Background",
+                contentDescription = "Buka Weather",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )

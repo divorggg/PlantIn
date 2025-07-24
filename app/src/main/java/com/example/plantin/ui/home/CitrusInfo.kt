@@ -37,6 +37,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -197,6 +199,7 @@ fun DiagnosisButton(text: String, iconId: Int, onClick: () -> Unit, modifier: Mo
         modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 48.dp) // Lebih fleksibel dari height(40.dp)
+            .semantics { contentDescription = text } // Tambahkan ini
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
