@@ -137,7 +137,7 @@ fun GuideScreen() {
                 .fillMaxWidth()
                 .weight(1f),
             elevation = CardDefaults.cardElevation(2.dp),
-            colors = CardDefaults.cardColors(containerColor = Color.White),
+            colors = CardDefaults.cardColors(containerColor = Color(0xFFF8F8F8)),
             shape = RoundedCornerShape(12.dp)
         ) {
             Column(
