@@ -72,10 +72,13 @@
             android:name=".ui.Treatment.TreatmentActivity"
             android:exported="false"
             android:theme="@style/Theme.PlantIn" />
+
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/UCropTheme.NotFullscreen" />
+
         <activity
             android:name=".ui.article.ArticlePage"
             android:exported="false"
@@ -114,14 +117,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <receiver
-            android:name="com.google.firebase.ml.modeldownloader.DownloadBroadcastReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.google.firebase.ml.modeldownloader.DOWNLOAD_COMPLETE" />
-            </intent-filter>
-        </receiver>
+
     </application>
 
 

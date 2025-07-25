@@ -11,4 +11,13 @@
 
 
     </style>
+
+    <style name="UCropTheme.NotFullscreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#66000000</item>
+        <item name="android:navigationBarColor">#66000000</item>
+    </style>
+
+
 </resources>

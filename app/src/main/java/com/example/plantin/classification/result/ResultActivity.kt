@@ -1,6 +1,5 @@
 package com.example.plantin.classification.result
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -32,7 +31,6 @@ import kotlin.math.exp
 
 class ResultActivity : ComponentActivity() {
 
-    private var tflite: Interpreter? = null
 
     // Konstanta sesuai dengan model Python terbaru
     companion object {
@@ -40,7 +38,6 @@ class ResultActivity : ComponentActivity() {
         private const val NUM_CLASSES = 5
     }
 
-    @SuppressLint("CoroutineCreationDuringComposition")
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,10 +57,11 @@ class ResultActivity : ComponentActivity() {
                             withContext(Dispatchers.IO) {
                                 val bitmap = uriToBitmap(imageUri, context)
                                 val model = loadModelFile("model_jeruk.tflite")
-                                tflite = Interpreter(model)
-                                val inferenceResult = runModel(bitmap)
 
-                                // Update state hasil
+                                val inferenceResult = Interpreter(model).use { interpreter ->
+                                    runModel(bitmap, interpreter)
+                                }
+
                                 result = inferenceResult
                                 val split = inferenceResult.split("|")
                                 val label = split[0].trim()
@@ -106,10 +104,6 @@ class ResultActivity : ComponentActivity() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        tflite?.close()
-    }
 
     @RequiresApi(Build.VERSION_CODES.P)
     private suspend fun uriToBitmap(uri: Uri, context: android.content.Context): Bitmap =
@@ -129,7 +123,7 @@ class ResultActivity : ComponentActivity() {
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private suspend fun runModel(bitmap: Bitmap): String = withContext(Dispatchers.Default) {
+    private suspend fun runModel(bitmap: Bitmap, interpreter: Interpreter): String = withContext(Dispatchers.Default) {
         val convertedBitmap = if (bitmap.config == Bitmap.Config.HARDWARE) {
             bitmap.copy(Bitmap.Config.ARGB_8888, true)
         } else {
@@ -139,7 +133,6 @@ class ResultActivity : ComponentActivity() {
         val resized = Bitmap.createScaledBitmap(convertedBitmap, IMAGE_SIZE, IMAGE_SIZE, true)
         val input = Array(1) { Array(IMAGE_SIZE) { Array(IMAGE_SIZE) { FloatArray(3) } } }
 
-        // Normalize pixel values to [0, 1] range (sesuai dengan model Python)
         for (y in 0 until IMAGE_SIZE) {
             for (x in 0 until IMAGE_SIZE) {
                 val pixel = resized.getPixel(x, y)
@@ -149,15 +142,10 @@ class ResultActivity : ComponentActivity() {
             }
         }
 
-        // Output sesuai dengan model Python (4 classes)
         val output = Array(1) { FloatArray(NUM_CLASSES) }
+        interpreter.run(input, output)
 
-        tflite?.run(input, output)
-
-        // Labels sesuai dengan model Python terbaru
         val classNames = listOf("Black Spot", "Citrus Canker", "Fresh", "Greening", "Not Orange")
-
-        // Apply softmax untuk mendapatkan confidence scores
         val expValues = output[0].map { exp(it.toDouble()) }
         val sumExp = expValues.sum()
         val softmaxOutput = expValues.map { (it / sumExp).toFloat() }
@@ -165,10 +153,9 @@ class ResultActivity : ComponentActivity() {
         val maxIdx = softmaxOutput.indices.maxByOrNull { softmaxOutput[it] } ?: -1
         val confidence = softmaxOutput[maxIdx]
 
-        // Untuk model terbaru, langsung return hasil tanpa threshold
-        // karena model sudah memiliki class "Not Orange" untuk deteksi non-orange
         return@withContext "${classNames[maxIdx]}|Confidence: ${"%.2f".format(confidence * 100)}%"
     }
+
 
     /**
      * Fungsi tambahan untuk mendapatkan probabilitas semua kelas
