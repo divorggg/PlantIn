@@ -41,6 +41,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -271,6 +273,7 @@ fun AwalIdentifikasiScreen(
                 modifier = Modifier
                     .fillMaxWidth(0.6f) // Setengah lebar layar (50%)
                     .height(48.dp)     // Opsional: tinggi tombol
+                    .semantics { contentDescription = "Tombol Ambil Gambar" }
                     .border(
                         1.dp,
                         Color.Black,
@@ -292,6 +295,7 @@ fun AwalIdentifikasiScreen(
                 modifier = Modifier
                     .fillMaxWidth(0.6f) // Setengah lebar layar (50%)
                     .height(48.dp)     // Opsional: tinggi tombol
+                    .semantics { contentDescription = "Tombol Unggah Gambar" }
                     .border(
                         1.dp,
                         Color.Black,
