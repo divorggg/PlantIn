@@ -121,13 +121,17 @@ fun CitrusInfo() {
 @Composable
 fun DetectionCard(onDetectionClick: () -> Unit) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics { contentDescription = "Kartu Deteksi Tanaman" },
         shape = RoundedCornerShape(12.dp),
+        onClick = onDetectionClick,
         colors = CardDefaults.cardColors(containerColor = Color(0xFFD7E2B6)),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Row(
             modifier = Modifier
+
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,

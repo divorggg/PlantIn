@@ -72,10 +72,13 @@
             android:name=".ui.Treatment.TreatmentActivity"
             android:exported="false"
             android:theme="@style/Theme.PlantIn" />
+
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            android:theme="@style/UCropTheme.NotFullscreen" />
+
         <activity
             android:name=".ui.article.ArticlePage"
             android:exported="false"
@@ -113,6 +116,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+
+
     </application>
+
 
 </manifest>

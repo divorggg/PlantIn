@@ -1,6 +1,6 @@
 <resources>
     <!-- App Name -->
-    <string name="app_name">CitrusDetector</string>
+    <string name="app_name">SitaniJeruk</string>
 
     <!-- Activity Titles -->
     <string name="title_activity_weather_predict">WeatherPredictActivity</string>
@@ -49,6 +49,9 @@
     <string name="CitrusGreeningDesc2">
 
     </string>
+
+    <string name="desc_petunjuk">Petunjuk aplikasi menyediakan petunjuk langkah demi langkah tentang cara menggunakan produk atau sistem dengan benar serta membantu pengguna menghindari kesalahan umum yang dapat terjadi saat menggunakan produk atau sistem untuk pertama kali.</string>
+
 
     <!-- Placeholder -->
     <string name="none" />
